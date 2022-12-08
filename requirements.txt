@@ -1,0 +1,8 @@
+Flask == 2.2.2
+python-dotenv == 0.20.0
+gevent == 21.12.0
+# json-checker == 2.0.0
+mongoengine == 0.24.2
+# Flask-Cors == 3.0.10
+yapf == 0.32.0
+flask-paginate == 2022.1.8

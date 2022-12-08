@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="mt-4 mx-4">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>
+      <div class="alert alert-primary" role="alert">
+        {{ message }}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  <!-- Button trigger modal -->
+  <button style="color: black;" type="button" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#insertOne">
+    Insert
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="insertOne" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form action="/user_management/access/insertOne" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Access</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Access Name</label>
+              <input name="accessName" type="text" class="form-control" id="exampleFormControlInput1"
+                placeholder="http method" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" style="color: black;">Insert</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <table class="table align-middle mb-4 bg-white">
+    <thead class="bg-light">
+      <tr>
+        <th>No.</th>
+        <th>Name</th>
+        <!-- <th>Title</th>
+        <th>Status</th>
+        <th>Position</th> -->
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for acc in access %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            {{ loop.index + pagination.skip }}
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <p class="fw-bold mb-1">{{ acc.accessName }}</p>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal"
+            data-bs-target="#findOne-{{acc.id}}">
+            Detail
+          </button>
+          <div class="modal fade" id="findOne-{{acc.id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Access</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Access Id</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.id}}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Access Name</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.accessName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Created By</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.createdBy.userName}}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Updated By</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.updatedBy.userName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Created At</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.createdAt}}</p>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                      <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">Updated At</h4>
+                        <hr>
+                        <p class="mb-0">{{acc.updatedAt}}</p>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal"
+            data-bs-target="#updateOne-{{acc.id}}">
+            Update
+          </button>
+          <div class="modal fade" id="updateOne-{{acc.id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <form action="/user_management/access/updateOne?accessId={{acc.id}}" method="POST">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Access</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Access Name</label>
+                      <input value="{{acc.accessName}}" name="accessName" type="text" class="form-control" id="exampleFormControlInput1"
+                        placeholder="http method" required>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" style="color: black;">Update</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+</div>
+
+<button type="button" class="btn btn-link btn-sm btn-rounded" data-bs-toggle="modal"
+  data-bs-target="#deleteOne-{{acc.id}}">
+  Delete
+</button>
+<div class="modal fade" id="deleteOne-{{acc.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Access</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert">
+          <!-- <h4 class="alert-heading">Access Id</h4>
+          <hr> -->
+          <p class="mb-0">id: {{acc.id}} will be delete</p>
+        </div>
+        
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="/user_management/access/deleteOne?accessId={{acc.id}}">
+          <button type="button" class="btn btn-primary" style="color: black;">Delete</button>
+
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{{ pagination.info }}
+{{ pagination.links }}
+</div>
+{% endblock %}
